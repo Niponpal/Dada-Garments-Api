@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
@@ -22,7 +23,7 @@ class LoginConrtoller {
       var response = await http.post(Url,body:  body, headers: header);
 
       if(response.statusCode ==200){
-        log("Success Full Login");
+        EasyLoading.showSuccess("Succcess Full Login");
 
         var data=  jsonDecode(response.body)['token'];
          FlutterSecureStorage storage = FlutterSecureStorage();
@@ -31,11 +32,11 @@ class LoginConrtoller {
 
       }
       else if(response.statusCode==422){
-
+        EasyLoading.showError("Password or Phone Number Increated");
         log("Passerod or Phone Number Increated");
       }
       else{
-        log("Something is Wrong");
+        EasyLoading.showError("Something is Wrong");
       }
     }
    catch(e){

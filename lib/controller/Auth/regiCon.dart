@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:developer';
@@ -27,11 +28,14 @@ class RegissterController{
        var response = await http.post(Url,body:data,headers: header);
        log("======================================asdfdsaaaaaaaaaaaaaf${response.statusCode}");
        if(response.statusCode==201){
-        log("Data Added Succeessful");
+         EasyLoading.showSuccess("Data Added Successful");
+        log("Data Added Successful");
        }
        else if(response.statusCode==422){
-         log("Email or Phone Number Tokon");
+         EasyLoading.showError("Email or Phone Number Token");
 
+       }else{
+         EasyLoading.showError("Something is Wrong");
        }
 
      }
