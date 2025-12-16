@@ -1,4 +1,7 @@
 
+import 'dart:developer';
+
+import 'package:edada/product/productui.dart';
 import 'package:edada/view/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,10 +22,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
     FlutterSecureStorage storage = FlutterSecureStorage();
 
-    storage.read(key: "Token");
+        var tokens = await storage.read(key: "token");
+      log("===========sadfsdaf======${tokens}");
 
-
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginScreen() ));
+      if(tokens == null){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen() ));
+      }
+      else{
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> ProductScreen() ));
+      }
   }
   @override
 

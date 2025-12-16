@@ -21,6 +21,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordC = TextEditingController();
 
   @override
+
+
+  @override
+  void initState() {
+    super.initState();
+    // your initialization code here
+  }
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
