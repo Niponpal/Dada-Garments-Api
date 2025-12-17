@@ -1,3 +1,4 @@
+import 'package:edada/product/productui.dart';
 import 'package:edada/view/auth/login/login.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:edada/view/auth/register/register.dart';
@@ -9,7 +10,7 @@ void main (){
     MaterialApp(
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home:ProductScreen(),
     )
   );
 }
