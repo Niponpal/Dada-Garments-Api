@@ -1,4 +1,6 @@
+import 'package:edada/controller/product/productCon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -8,7 +10,23 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  List productList = [];
+
+  featchProduct() async {
+    await Future.delayed(Duration(seconds: 3));
+
+    EasyLoading.show(status: "Loading...");
+    productList = await ProductGetController().getProduct();
+    EasyLoading.dismiss();
+    setState(() {});
+  }
+
   @override
+  void initState() {
+    super.initState();
+    featchProduct();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,13 +52,13 @@ class _ProductScreenState extends State<ProductScreen> {
         centerTitle: true,
       ),
       body: GridView.builder(
-        itemCount: 5,
+        itemCount: productList.length,
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 12,
-          childAspectRatio: .7
+          childAspectRatio: .68,
         ),
         itemBuilder: (context, index) => Stack(
           children: [
@@ -56,9 +74,9 @@ class _ProductScreenState extends State<ProductScreen> {
                       height: 160,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          fit:BoxFit.cover,
+                          fit: BoxFit.cover,
                           image: NetworkImage(
-                            "https://png.pngtree.com/png-vector/20240202/ourlarge/pngtree-isolated-white-cap-front-view-png-image_11591512.png",
+                            "https://eplay.coderangon.com/public/storage/${productList[index]['image']}",
                           ),
                         ),
                         borderRadius: BorderRadius.only(
@@ -67,31 +85,54 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                       ),
                     ),
-                    Text("Party Borkha Abaya Koliza",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-
-                       Row(
-                        spacing: 8,
-                        children: [
-                          Text("2800",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-                          Text("3200",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,decoration: TextDecoration.lineThrough),),
-                        ],
+                    Text(
+                      "${productList[index]['title']}",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
+                    ),
 
-                   Center(
-                     child: Card(
-                       child:  Padding(
-                         padding: const EdgeInsets.all(8.0),
-                         child: Text("Add To Cart",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-                       ),
-                     ),
-                   )
+                    Row(
+                      spacing: 8,
+                      children: [
+                        Text(
+                          "${productList[index]['price']}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          "${productList[index]['old_price']}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Center(
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Add To Cart",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            Positioned(
-                left: 10,
-                child: Image.asset("asset/images/offer.png"))
+            Positioned(left: 10, child: Image.asset("asset/images/offer.png")),
           ],
         ),
       ),
