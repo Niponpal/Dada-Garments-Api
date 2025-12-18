@@ -58,7 +58,7 @@ class _ProductScreenState extends State<ProductScreen> {
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 12,
-          childAspectRatio: .68,
+          childAspectRatio: .53,
         ),
         itemBuilder: (context, index) => Stack(
           children: [
@@ -91,6 +91,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
 
                     Row(
@@ -132,7 +134,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
             ),
-            Positioned(left: 10, child: Image.asset("asset/images/offer.png")),
+            Positioned(left: 10, child: Image.asset("asset/images/offer.png",width: 40,height: 40,)),
           ],
         ),
       ),
