@@ -25,7 +25,7 @@ class LoginConrtoller {
       if(response.statusCode ==200){
         EasyLoading.showSuccess("Succcess Full Login");
 
-        var data=  jsonDecode(response.body)['token'];
+        var data =  jsonDecode(response.body)['token'];
          FlutterSecureStorage storage = FlutterSecureStorage();
         log("$data");
          storage.write(key: "token", value: data);

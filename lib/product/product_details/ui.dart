@@ -1,3 +1,8 @@
+
+
+import 'dart:developer';
+
+import 'package:edada/controller/p_detailsCon/ui.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -9,11 +14,26 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
 
+  Map Productdata = {};
+
   featchData() async{
-    Product
+
+    var response = await ProductGetApi().ProductApi();
+    var data = response['data'];
+
+    setState(() { });
+    Productdata = data;
+    setState(() { });
+      log("$data");
   }
 
   @override
+
+  @override
+  void initState() {
+    featchData();
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,65 +83,94 @@ class _ProductDetailsState extends State<ProductDetails> {
                           height: 300,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage("asset/images/detailsimag.png"),
+                              image: NetworkImage("https://eplay.coderangon.com/public/storage/${Productdata['image']}"),
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
         
                         SizedBox(height: 10),
-        
-                        Row(
-                          spacing: 4,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    "asset/images/detailsimag.png",
+
+                        // Gallery Images
+                        if (Productdata['gallery'] != null)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(Productdata['gallery'].length, (index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 4),
+                                child: Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://eplay.coderangon.com/public/storage/${Productdata['gallery'][index]}"),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  fit: BoxFit.cover,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    "asset/images/detailsimag.png",
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    "asset/images/detailsimag.png",
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                              );
+                            }),
+                          ),
+
+
+                        // Row(
+                        //   spacing: 4,
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Container(
+                        //       width: 80,
+                        //       height: 80,
+                        //       decoration: BoxDecoration(
+                        //         image: DecorationImage(
+                        //           image: AssetImage(
+                        //             "asset/images/detailsimag.png",
+                        //           ),
+                        //           fit: BoxFit.cover,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       width: 80,
+                        //       height: 80,
+                        //       decoration: BoxDecoration(
+                        //         image: DecorationImage(
+                        //           image: AssetImage(
+                        //             "asset/images/detailsimag.png",
+                        //           ),
+                        //           fit: BoxFit.cover,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       width: 80,
+                        //       height: 80,
+                        //       decoration: BoxDecoration(
+                        //         image: DecorationImage(
+                        //           image: AssetImage(
+                        //             "asset/images/detailsimag.png",
+                        //           ),
+                        //           fit: BoxFit.cover,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+
+
+
                       ],
                     ),
                   ),
                 ),
               ),
+
+
+
               SizedBox(height: 20),
         
               Text(
-                "Party Borkha Abaya Black",
+                Productdata['title'] ?? "",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 25,
@@ -130,7 +179,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               SizedBox(height: 8),
               Text(
-                "Party Abaya",
+                Productdata['category'] ?? "",
                 style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
@@ -143,7 +192,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 spacing: 8,
                 children: [
                   Text(
-                    "2880",
+                    "\$${Productdata['price'] ?? '0'}",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 22,
@@ -151,7 +200,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                   ),
                   Text(
-                    "3200",
+                    "\$${Productdata['old_price'] ?? '0'}",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 22,
@@ -182,13 +231,25 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               SizedBox(height: 8),
               Text(
-                "Stocks:",
+                "Stock: ${Productdata['stock'] ?? '0'}",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
                   color: Color(0xfff1E1E1E),
                 ),
               ),
+              SizedBox(height: 8),
+              Text(
+                "rating: ${Productdata['rating'] ?? '0'}",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22,
+                  color: Color(0xfff1E1E1E),
+                ),
+              ),
+
+
+
               SizedBox(height: 8),
               Container(
                 padding: const EdgeInsets.only(bottom: 6),
@@ -210,7 +271,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English... Read More:",
+                  Productdata['description'] ?? "",
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 16,
@@ -227,3 +288,4 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 }
+
