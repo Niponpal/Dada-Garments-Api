@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:edada/controller/home/categorycont.dart';
 import 'package:edada/controller/home/sliderCont.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/home/sellingCont.dart';
 
 class HomeProductScreen extends StatefulWidget {
   const HomeProductScreen({super.key});
@@ -14,22 +17,41 @@ class HomeProductScreen extends StatefulWidget {
 class _HomeProductScreenState extends State<HomeProductScreen> {
 
      List sliderList= [];
+     List categoryList= [];
+     Map SelingData={};
+
+     fatchSellingP() async{
+       SelingData = await SellingController().SellingGetApi();
+
+       log("===delling================$SelingData");
+       setState(() {});
+     }
 
      featchSlider () async {
        setState(() {
 
        });
      sliderList= await SliderController().SlidergetApi();
-     log("===============$sliderList");
+       setState(() {});
+     }
+
+     featchCategory () async{
        setState(() {
 
        });
+      categoryList= await CategoryController().CategoryGetApi();
+
+      setState(() {
+
+      });
      }
 
   @override
   @override
   void initState() {
     featchSlider();
+    featchCategory();
+    fatchSellingP();
     super.initState();
   }
   Widget build(BuildContext context) {
@@ -112,7 +134,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
-                          itemCount: 10,
+                          itemCount: categoryList.length,
                           itemBuilder: (context, index) => Stack(
                             children: [
                               Container(
@@ -129,8 +151,8 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                     width: 90,
                                     height: 100,
                                     color: Colors.grey,
-                                    child: Image.asset(
-                                      "asset/images/slider.png",
+                                    child: Image.network(
+                                      "https://eplay.coderangon.com/storage/${categoryList[index]['image']}",
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -140,7 +162,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                 (
                                   bottom:50 ,
                                   left: 25,
-                                  child: Text("Women’s 2",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color:Color(0xffFFFFFF)),maxLines: 1,overflow:TextOverflow.ellipsis,),)
+                                  child: Text("${categoryList[index]['name']}",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color:Color(0xffFFFFFF)),maxLines: 1,overflow:TextOverflow.ellipsis,),)
                             ],
                           ),
                         ),
@@ -160,8 +182,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
           
                       GridView.builder(
                             shrinkWrap: true,
-          
-                            itemCount: 2,
+                            itemCount: SelingData.length,
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               crossAxisSpacing: 12,
@@ -184,11 +205,10 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /// Image
                       ClipRRect(
                         borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-                        child: Image.asset(
-                          "asset/images/slider.png",
+                        child: Image.network(
+                          "https://eplay.coderangon.com/storage/${SelingData['hot-selling'][index]['image']}",
                           height: 160,
                           width: double.infinity,
                           fit: BoxFit.cover,
@@ -202,7 +222,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                           children: [
                             /// Title
                             Text(
-                              "Party Borkha Abaya Koliza",
+                              "${SelingData['hot-selling'][index]['title']}",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -217,7 +237,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                             Row(
                               children: [
                                 Text(
-                                  "2880",
+                                  "${SelingData['hot-selling'][index]['price']}",
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -225,7 +245,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  "3200",
+                                  "${SelingData['hot-selling'][index]['old_price']}",
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: Colors.grey,
@@ -262,7 +282,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("New Arrival",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600),),
+                          Text("top-selling",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600),),
                           Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),),
                         ],
                       ),
@@ -296,8 +316,8 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
           
                                 ClipRRect(
                                   borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-                                  child: Image.asset(
-                                    "asset/images/slider.png",
+                                  child: Image.network(
+                                    "https://eplay.coderangon.com/storage/${SelingData['top-selling'][index]['image']}",
                                     height: 160,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -311,7 +331,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                     children: [
                                       /// Title
                                       Text(
-                                        "Party Borkha Abaya Koliza",
+                                        "${SelingData['top-selling'][index]['title']}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -326,7 +346,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            "2880",
+                                            "${SelingData['top-selling'][index]['price']}",
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -334,7 +354,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                           ),
                                           SizedBox(width: 8),
                                           Text(
-                                            "3200",
+                                            "${SelingData['top-selling'][index]['old_price']}",
                                             style: TextStyle(
                                               fontSize: 13,
                                               color: Colors.grey,
@@ -406,8 +426,8 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
           
                                 ClipRRect(
                                   borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-                                  child: Image.asset(
-                                    "asset/images/slider.png",
+                                  child: Image.network(
+                                    "https://eplay.coderangon.com/storage/${SelingData['new-product'][index]['image']}",
                                     height: 160,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
@@ -421,7 +441,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                     children: [
                                       /// Title
                                       Text(
-                                        "Party Borkha Abaya Koliza",
+                                        "${SelingData['new-product'][index]['title']}",
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -436,7 +456,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            "2880",
+                                            "${SelingData['new-product'][index]['price']}",
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold,
@@ -444,7 +464,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                                           ),
                                           SizedBox(width: 8),
                                           Text(
-                                            "3200",
+                                            "${SelingData['new-product'][index]['old_price']}",
                                             style: TextStyle(
                                               fontSize: 13,
                                               color: Colors.grey,
