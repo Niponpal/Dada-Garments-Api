@@ -4,9 +4,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'dart:developer';
 
 class ProductGetApi {
-  Future<Map> ProductApi() async {
+  Future<Map> ProductApi({required int id}) async {
     try {
-      Uri url = Uri.parse("https://eplay.coderangon.com/api/products/3");
+      Uri url = Uri.parse("https://eplay.coderangon.com/api/products/$id");
       var res = await http.get(url);
 
       if (res.statusCode == 200) {

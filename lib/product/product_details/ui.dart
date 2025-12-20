@@ -6,7 +6,9 @@ import 'package:edada/controller/p_detailsCon/ui.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+  const ProductDetails({super.key, required this.pId});
+
+  final int pId;
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -18,7 +20,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   featchData() async{
 
-    var response = await ProductGetApi().ProductApi();
+    var response = await ProductGetApi().ProductApi(id: widget.pId);
     var data = response['data'];
 
     setState(() { });
@@ -61,7 +63,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(top: 10,right:0 ,left:20 ,bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -75,7 +77,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(8),
                     child: Column(
                       children: [
                         Container(
@@ -88,7 +90,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ),
                           ),
                         ),
-        
+
                         SizedBox(height: 10),
 
                         // Gallery Images
@@ -168,108 +170,132 @@ class _ProductDetailsState extends State<ProductDetails> {
 
 
               SizedBox(height: 20),
-        
-              Text(
-                Productdata['title'] ?? "",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 25,
-                  color: Color(0xfff1E1E1E),
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                Productdata['category'] ?? "",
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: Color(0xfff1E1E1E),
-                ),
-              ),
-        
-              SizedBox(height: 8),
-              Row(
-                spacing: 8,
-                children: [
-                  Text(
-                    "\$${Productdata['price'] ?? '0'}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 22,
-                      color: Color(0xfff1E1E1E),
-                    ),
-                  ),
-                  Text(
-                    "\$${Productdata['old_price'] ?? '0'}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 22,
-                      color: Color(0xfff1E1E1E),
-                      decoration: TextDecoration.lineThrough,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Text(
-                "Color",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                  color: Color(0xfff1E1E1E),
-                ),
-              ),
-              SizedBox(height: 8),
-        
-              Text(
-                "Size",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  color: Color(0xfff1E1E1E),
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "Stock: ${Productdata['stock'] ?? '0'}",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  color: Color(0xfff1E1E1E),
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "rating: ${Productdata['rating'] ?? '0'}",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 22,
-                  color: Color(0xfff1E1E1E),
-                ),
-              ),
 
-
-
-              SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.only(bottom: 6),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.orange, width: 3),
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
-                  "Description",
+                  Productdata['title'] ?? "",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                    color: Color(0xff1E1E1E),
+                    fontSize: 25,
+                    color: Color(0xfff1E1E1E),
                   ),
                 ),
               ),
-        
+              SizedBox(height: 8),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  Productdata['category'] ?? "",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: Color(0xfff1E1E1E),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  spacing: 8,
+                  children: [
+                    Text(
+                      "\$${Productdata['price'] ?? '0'}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22,
+                        color: Color(0xfff1E1E1E),
+                      ),
+                    ),
+                    Text(
+                      "\$${Productdata['old_price'] ?? '0'}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22,
+                        color: Color(0xfff1E1E1E),
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  "Color",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Color(0xfff1E1E1E),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  "Size",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    color: Color(0xfff1E1E1E),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  "Stock: ${Productdata['stock'] ?? '0'}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    color: Color(0xfff1E1E1E),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(
+                  "rating: ${Productdata['rating'] ?? '0'}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    color: Color(0xfff1E1E1E),
+                  ),
+                ),
+              ),
+
+
+
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Container(
+                  padding: const EdgeInsets.only(bottom: 6),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.orange, width: 3),
+                    ),
+                  ),
+                  child: Text(
+                    "Description",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Color(0xff1E1E1E),
+                    ),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: Text(
                   Productdata['description'] ?? "",
                   style: TextStyle(
