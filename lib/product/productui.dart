@@ -70,7 +70,7 @@ class _ProductScreenState extends State<ProductScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProductDetails(
-                  pId: int.parse("${productList[index]['id']}"), // string হলে int parse
+                  pId: int.parse("${productList[index]['id']}"),
                 ),
               ),
             );
