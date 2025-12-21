@@ -191,6 +191,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
 
                   GridView.builder(
                     shrinkWrap: true,
+                    physics:  NeverScrollableScrollPhysics(),
                    // itemCount: SelingData.length,
                     itemCount: SelingData['hot-selling']?.length ?? 0,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -299,6 +300,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                   SizedBox(height: 15,),
 
                   GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     //itemCount: 2,
                     itemCount: SelingData['top-selling']?.length ?? 0,
@@ -411,6 +413,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                   SizedBox(height: 15,),
 
                   GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     //itemCount: 2,
                     itemCount: SelingData['new-product']?.length ?? 0,
