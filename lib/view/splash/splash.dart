@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:edada/homeProduct/ui.dart';
 import 'package:edada/product/productui.dart';
 import 'package:edada/view/auth/login/login.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen() ));
       }
       else{
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductScreen() ));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeProductScreen() ));
       }
   }
   @override

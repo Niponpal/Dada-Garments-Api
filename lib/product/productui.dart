@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key});
+  const ProductScreen({super.key, required this.Tittle});
 
   @override
+  final String Tittle;
+
   State<ProductScreen> createState() => _ProductScreenState();
 }
 
@@ -17,9 +19,9 @@ class _ProductScreenState extends State<ProductScreen> {
 
   featchProduct() async {
     await Future.delayed(Duration(seconds: 3));
-
+log("=============${widget.Tittle}====================");
     EasyLoading.show(status: "Loading...");
-    productList = await ProductGetController().getProduct();
+    productList = await ProductGetController().getProduct(t: widget.Tittle);
     EasyLoading.dismiss();
     setState(() {});
   }

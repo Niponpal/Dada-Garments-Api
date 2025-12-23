@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:edada/controller/home/categorycont.dart';
 import 'package:edada/controller/home/sliderCont.dart';
+import 'package:edada/product/productui.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/home/sellingCont.dart';
@@ -16,23 +17,26 @@ class HomeProductScreen extends StatefulWidget {
 
 class _HomeProductScreenState extends State<HomeProductScreen> {
       bool isLoading = true;
-
-     List sliderList= [];
-     List categoryList= [];
-     Map SelingData={};
+      List sliderList= [];
+      List categoryList= [];
+      Map SelingData={};
 
      fatchSellingP() async{
-       SelingData = await SellingController().SellingGetApi();
 
+       SelingData = await SellingController().SellingGetApi();
        log("===delling================$SelingData");
        setState(() {});
      }
 
      featchSlider () async {
        setState(() {
-
        });
+
+       isLoading = true;
+
+       await Future.delayed(Duration(seconds: 6));
      sliderList= await SliderController().SlidergetApi();
+       isLoading = false;
        setState(() {});
      }
 
@@ -50,18 +54,15 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
   @override
   @override
   void initState() {
-       setState(() {
 
-       });
-    isLoading = true;
+
+
     featchSlider();
     featchCategory();
     fatchSellingP();
     super.initState();
-    isLoading = false;
-    setState(() {
 
-    });
+
   }
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +91,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
           )
         ],
       ),
-      body: isLoading==true? CircularProgressIndicator(): Padding(
+      body: isLoading==true? Center(child: CircularProgressIndicator()): Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
@@ -144,35 +145,42 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
                       itemCount: categoryList.length,
-                      itemBuilder: (context, index) => Stack(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(right: 6),
-                            width: 110,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child:  ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Container(
-                                width: 90,
-                                height: 100,
-                                color: Colors.grey,
-                                child: Image.network(
-                                  "https://eplay.coderangon.com/storage/${categoryList[index]['image']}",
-                                  fit: BoxFit.fill,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          log("===============${categoryList[index]['id']}");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: "${categoryList[index]['id']}"),));
+
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 6),
+                              width: 110,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child:  ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Container(
+                                  width: 90,
+                                  height: 100,
+                                  color: Colors.grey,
+                                  child: Image.network(
+                                    "https://eplay.coderangon.com/storage/${categoryList[index]['image']}",
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Positioned
-                            (
-                            bottom:50 ,
-                            left: 25,
-                            child: Text("${categoryList[index]['name']}",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color:Color(0xffFFFFFF)),maxLines: 1,overflow:TextOverflow.ellipsis,),)
-                        ],
+                            Positioned
+                              (
+                              bottom:50 ,
+                              left: 25,
+                              child: Text("${categoryList[index]['name']}",style: TextStyle(fontSize: 13,fontWeight: FontWeight.w600,color:Color(0xffFFFFFF)),maxLines: 1,overflow:TextOverflow.ellipsis,),)
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -189,102 +197,111 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                   ),
                   SizedBox(height: 15,),
 
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics:  NeverScrollableScrollPhysics(),
-                   // itemCount: SelingData.length,
-                    itemCount: SelingData['hot-selling']?.length ?? 0,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.58,
+                  SizedBox(
+                    height: 310,
+                    width: double.infinity,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+
+                     scrollDirection: Axis.horizontal,
+                     // itemCount: SelingData.length,
+                      itemCount: SelingData['hot-selling']?.length ?? 0,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.8,
+                          mainAxisExtent: 180,
+                      ),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+                                child: Image.network(
+                                  "https://eplay.coderangon.com/storage/${SelingData['hot-selling'][index]['image']}",
+                                  height: 160,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /// Title
+                                    Text(
+                                      "${SelingData['hot-selling'][index]['title']}",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 6),
+
+                                    /// Price
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${SelingData['hot-selling'][index]['price']}",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "${SelingData['hot-selling'][index]['old_price']}",
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey,
+                                            decoration: TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    /// Button
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 36,
+                                      child: OutlinedButton(
+                                        onPressed: () {},
+                                        child: Text("Add To Cart"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 8,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-                              child: Image.network(
-                                "https://eplay.coderangon.com/storage/${SelingData['hot-selling'][index]['image']}",
-                                height: 160,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  /// Title
-                                  Text(
-                                    "${SelingData['hot-selling'][index]['title']}",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 6),
-
-                                  /// Price
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${SelingData['hot-selling'][index]['price']}",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "${SelingData['hot-selling'][index]['old_price']}",
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                          decoration: TextDecoration.lineThrough,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  SizedBox(height: 10),
-
-                                  /// Button
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 36,
-                                    child: OutlinedButton(
-                                      onPressed: () {},
-                                      child: Text("Add To Cart"),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
                   ),
+
+
+
                   SizedBox(height: 15,),
                   // Best Selling Area End
                   // New Arrival Area start
@@ -299,103 +316,109 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                   ),
                   SizedBox(height: 15,),
 
-                  GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    //itemCount: 2,
-                    itemCount: SelingData['top-selling']?.length ?? 0,
+                  SizedBox(
+                    height: 310,
+                    width: double.infinity,
+                    child: GridView.builder(
+                    //  physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      //itemCount: 2,
+                      itemCount: SelingData['top-selling']?.length ?? 0,
 
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.58,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.58,
+                        mainAxisExtent: 180,
+                      ),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+                                child: Image.network(
+                                  "https://eplay.coderangon.com/storage/${SelingData['top-selling'][index]['image']}",
+                                  height: 160,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /// Title
+                                    Text(
+                                      "${SelingData['top-selling'][index]['title']}",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 6),
+
+                                    /// Price
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${SelingData['top-selling'][index]['price']}",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "${SelingData['top-selling'][index]['old_price']}",
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey,
+                                            decoration: TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    /// Button
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 36,
+                                      child: OutlinedButton(
+                                        onPressed: () {},
+                                        child: Text("Add To Cart"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 8,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            ClipRRect(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-                              child: Image.network(
-                                "https://eplay.coderangon.com/storage/${SelingData['top-selling'][index]['image']}",
-                                height: 160,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  /// Title
-                                  Text(
-                                    "${SelingData['top-selling'][index]['title']}",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 6),
-
-                                  /// Price
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${SelingData['top-selling'][index]['price']}",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "${SelingData['top-selling'][index]['old_price']}",
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                          decoration: TextDecoration.lineThrough,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  SizedBox(height: 10),
-
-                                  /// Button
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 36,
-                                    child: OutlinedButton(
-                                      onPressed: () {},
-                                      child: Text("Add To Cart"),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
                   ),
                   SizedBox(height: 15,),
                   // New Arrival Area End
@@ -407,107 +430,117 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("New Product",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600),),
-                      Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: 'New Product pages',),));
+                          },
+                          child:
+                      Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),)),
                     ],
                   ),
                   SizedBox(height: 15,),
 
-                  GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    //itemCount: 2,
-                    itemCount: SelingData['new-product']?.length ?? 0,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.58,
+                  SizedBox(
+                    height: 310,
+                    width: double.infinity,
+                    child: GridView.builder(
+                     scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      //itemCount: 2,
+                      itemCount: SelingData['new-product']?.length ?? 0,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 1,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.58,
+                        mainAxisExtent: 180,
+                      ),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(14),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
+                                child: Image.network(
+                                  "https://eplay.coderangon.com/storage/${SelingData['new-product'][index]['image']}",
+                                  height: 160,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /// Title
+                                    Text(
+                                      "${SelingData['new-product'][index]['title']}",
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 6),
+
+                                    /// Price
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${SelingData['new-product'][index]['price']}",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          "${SelingData['new-product'][index]['old_price']}",
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey,
+                                            decoration: TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+
+                                    SizedBox(height: 10),
+
+                                    /// Button
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 36,
+                                      child: OutlinedButton(
+                                        onPressed: () {},
+                                        child: Text("Add To Cart"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(14),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 8,
-                              offset: Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            ClipRRect(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-                              child: Image.network(
-                                "https://eplay.coderangon.com/storage/${SelingData['new-product'][index]['image']}",
-                                height: 160,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  /// Title
-                                  Text(
-                                    "${SelingData['new-product'][index]['title']}",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 6),
-
-                                  /// Price
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${SelingData['new-product'][index]['price']}",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        "${SelingData['new-product'][index]['old_price']}",
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                          decoration: TextDecoration.lineThrough,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  SizedBox(height: 10),
-
-                                  /// Button
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 36,
-                                    child: OutlinedButton(
-                                      onPressed: () {},
-                                      child: Text("Add To Cart"),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
                   ),
                   SizedBox(height: 15,),
                   // New Arrival Area End

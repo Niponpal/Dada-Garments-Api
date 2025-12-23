@@ -196,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                    });
 
                    if(state==true){
-                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProductScreen(),));
+                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: "login pages",),));
                    }
                     },
                     child: Card(
