@@ -192,7 +192,13 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Best Selling",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600),),
-                      Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),),
+                      InkWell(
+                          onTap: () {
+                            log("===========");
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: "hot-selling"),));
+                          },
+                          child: Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),)),
+
                     ],
                   ),
                   SizedBox(height: 15,),
@@ -311,7 +317,12 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("top-selling",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600),),
-                      Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),),
+                     InkWell(
+                       onTap: () {
+                         Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: 'top-selling'),));
+                       },
+                       child:  Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),),
+                     )
                     ],
                   ),
                   SizedBox(height: 15,),
@@ -432,7 +443,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
                       Text("New Product",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600),),
                       InkWell(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: 'New Product pages',),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(Tittle: 'latests',),));
                           },
                           child:
                       Text("See all",style: TextStyle(fontSize: 19,fontWeight:FontWeight.w600,color: Colors.orangeAccent),)),
