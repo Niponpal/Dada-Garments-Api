@@ -1,11 +1,13 @@
 
 import 'dart:developer';
 
-import 'package:edada/homeProduct/ui.dart';
-import 'package:edada/product/productui.dart';
+
+
 import 'package:edada/view/auth/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../homeProduct/ui.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

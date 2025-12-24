@@ -1,11 +1,12 @@
 
 import 'dart:developer';
 
-import 'package:edada/product/productui.dart';
+
 import 'package:edada/view/auth/register/register.dart';
 import 'package:flutter/material.dart';
 
 import '../../../controller/Auth/loginCon.dart';
+import '../../product/productui.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

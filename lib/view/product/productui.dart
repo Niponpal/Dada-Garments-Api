@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:edada/controller/product/productCon.dart';
-import 'package:edada/product/product_details/ui.dart';
+import 'package:edada/view/product/product_details/ui.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 

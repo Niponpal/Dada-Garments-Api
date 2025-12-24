@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:edada/controller/home/categorycont.dart';
 import 'package:edada/controller/home/sliderCont.dart';
-import 'package:edada/product/productui.dart';
+
 import 'package:flutter/material.dart';
 
-import '../controller/home/sellingCont.dart';
+import '../../controller/home/sellingCont.dart';
+import '../product/productui.dart';
+
 
 class HomeProductScreen extends StatefulWidget {
   const HomeProductScreen({super.key});

@@ -1,7 +1,5 @@
-import 'package:edada/homeProduct/ui.dart';
-import 'package:edada/product/product_details/ui.dart';
-import 'package:edada/product/productui.dart';
 import 'package:edada/view/auth/login/login.dart';
+import 'package:edada/view/shiping/ui.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:edada/view/auth/register/register.dart';
 import 'package:edada/view/splash/splash.dart';
@@ -12,9 +10,7 @@ void main (){
     MaterialApp(
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      home:HomeProductScreen(
-
-      ),
+      home:ShippingScreen(),
     )
   );
 }
