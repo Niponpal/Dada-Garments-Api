@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../shiping/ui.dart';
+
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
 
@@ -74,7 +76,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text("Nipon Chandra Pal"),
+                            Text("${userData['name']}"),
                           ],
                         ),
                         Row(
@@ -87,7 +89,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text("01706356852:"),
+                            Text("${userData['phone']}"),
                           ],
                         ),
                         Row(
@@ -100,16 +102,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text("Nawabgonj ,"),
-                            Text("Dinajpur ,"),
-                            Text("Dhaka"),
+                            Text("${userData['street']}, ${userData['upazila']}, ${userData['district']} ,"),
                           ],
                         ),
                       ],
                     ),
                   ),
                 ),
-                Positioned(top: 5, right: 8, child: Icon(Icons.edit)),
+                Positioned(top: 5, right: 8, child: InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShippingScreen())).then((v) {
+                        getUserData();
+                      });
+                    },
+                    child: Icon(Icons.edit))),
               ],
             ),
             SizedBox(height: 14),
