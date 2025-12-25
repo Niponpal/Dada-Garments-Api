@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -8,7 +12,25 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  Map userData = {};
+
+  getUserData() async {
+    FlutterSecureStorage storage = FlutterSecureStorage();
+    var d = await storage.read(key: "shipping");
+    log("======D : $d");
+    if(d != null){
+      userData = jsonDecode(d);
+      log("======userData : ${userData['name']}");
+    }
+    setState(() {});
+  }
   @override
+
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

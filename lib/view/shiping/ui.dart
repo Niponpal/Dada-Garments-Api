@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../controller/Auth/regiCon.dart';
 import '../auth/login/login.dart';
@@ -23,7 +24,32 @@ class _ShippingScreenState extends State<ShippingScreen> {
   final TextEditingController phoneController = TextEditingController();
 
 
+  Map userData = {};
+
+  getUserData() async {
+    FlutterSecureStorage storage = FlutterSecureStorage();
+    var d = await storage.read(key: "shipping");
+    log("======D : $d");
+    if (d != null) {
+      userData = jsonDecode(d);
+      log("======userData : ${userData['name']}");
+      nameController.text = userData['name'];
+      phoneController.text = userData['phone'];
+      streetController.text = userData['street'];
+      districtController.text = userData['upazila'];
+      upazilaController.text = userData['district'];
+    }
+  }
+
   @override
+
+
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -209,17 +235,36 @@ class _ShippingScreenState extends State<ShippingScreen> {
                         RegissterController().RegisterData(data:a);
 
                       },
-                      child: Card(
-                        color: Color(0xffF4A758),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
-                              "Next",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color:Colors.white,
+                      child: InkWell(
+                        onTap: () async {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          var data = {
+                            "name": nameController.text,
+                            "phone": phoneController.text,
+                            "street": streetController.text,
+                            "upazila": upazilaController.text,
+                            "district": districtController.text,
+                          };
+                          log("===========${data}==");
+                          FlutterSecureStorage storage = FlutterSecureStorage();
+                          await storage.write(key: "shipping", value: jsonEncode(data));
+                          Navigator.pop(context);
+                        },
+
+                        child: Card(
+                          color: Color(0xffF4A758),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "Next",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color:Colors.white,
+                                ),
                               ),
                             ),
                           ),
