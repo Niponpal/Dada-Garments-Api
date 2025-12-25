@@ -28,9 +28,10 @@ class LoginConrtoller {
         var data =  jsonDecode(response.body)['token'];
          FlutterSecureStorage storage = FlutterSecureStorage();
         log("$data");
-         storage.write(key: "token", value: data);
-
-         return true;
+        await storage.write(key: "token", value: data['token']);
+        await storage.write(key: "user-info", value: jsonEncode(data['user']));
+        EasyLoading.showSuccess("Login Success");
+        return true;
 
       }
       else if(response.statusCode==422){
