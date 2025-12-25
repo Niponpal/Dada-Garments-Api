@@ -117,6 +117,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     },
                     child: Icon(Icons.edit))),
               ],
+
             ),
             SizedBox(height: 14),
             Text(

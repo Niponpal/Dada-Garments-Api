@@ -37,7 +37,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
        isLoading = true;
 
        await Future.delayed(Duration(seconds: 6));
-     sliderList= await SliderController().SlidergetApi();
+       sliderList= await SliderController().SlidergetApi();
        isLoading = false;
        setState(() {});
      }
@@ -54,7 +54,7 @@ class _HomeProductScreenState extends State<HomeProductScreen> {
      }
 
   @override
-  @override
+
   void initState() {
 
 
