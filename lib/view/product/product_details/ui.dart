@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:edada/controller/p_detailsCon/ui.dart';
+import 'package:edada/view/checkout/ui.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -82,7 +83,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       children: [
                         Container(
                           width: 250,
-                          height: 300,
+                          height: 280,
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: NetworkImage("https://eplay.coderangon.com/public/storage/${Productdata['image']}"),
@@ -91,7 +92,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ),
                         ),
 
-                        SizedBox(height: 10),
+                  SizedBox(height: 8,),
 
                         // Gallery Images
                         if (Productdata['gallery'] != null)
@@ -114,53 +115,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                               );
                             }),
                           ),
-
-
-                        // Row(
-                        //   spacing: 4,
-                        //   mainAxisAlignment: MainAxisAlignment.center,
-                        //   children: [
-                        //     Container(
-                        //       width: 80,
-                        //       height: 80,
-                        //       decoration: BoxDecoration(
-                        //         image: DecorationImage(
-                        //           image: AssetImage(
-                        //             "asset/images/detailsimag.png",
-                        //           ),
-                        //           fit: BoxFit.cover,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Container(
-                        //       width: 80,
-                        //       height: 80,
-                        //       decoration: BoxDecoration(
-                        //         image: DecorationImage(
-                        //           image: AssetImage(
-                        //             "asset/images/detailsimag.png",
-                        //           ),
-                        //           fit: BoxFit.cover,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //     Container(
-                        //       width: 80,
-                        //       height: 80,
-                        //       decoration: BoxDecoration(
-                        //         image: DecorationImage(
-                        //           image: AssetImage(
-                        //             "asset/images/detailsimag.png",
-                        //           ),
-                        //           fit: BoxFit.cover,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-
-
-
                       ],
                     ),
                   ),
@@ -169,7 +123,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
 
 
-              SizedBox(height: 20),
+              SizedBox(height: 10),
 
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
@@ -270,8 +224,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                 ),
               ),
-
-
+              
 
               SizedBox(height: 8),
               Padding(
@@ -307,6 +260,43 @@ class _ProductDetailsState extends State<ProductDetails> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+
+
+              Padding(
+                padding: const EdgeInsets.only(left: 4.0,right: 15,top: 8,bottom: 10),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      log("FAB Clicked ===========$Productdata");
+
+                      Map pData =
+                        {
+                          "id": Productdata["id"],
+                          "title": Productdata["title"],
+                          "brand": Productdata["brand"],
+                          "old_price": Productdata["old_price"],
+                          "price": Productdata["price"],
+                          "image": Productdata["image"],
+                        };
+
+
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  CheckoutScreen(productBuyData: pData,),));
+                    },
+                    icon: const Icon(Icons.shopping_cart,color: Colors.white,),
+                    label: const Text(
+                      "Buy",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700,color: Colors.white),
+                    ),
+                    backgroundColor: Colors.orangeAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              )
+
             ],
           ),
         ),

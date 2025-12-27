@@ -92,7 +92,7 @@ log("=============${widget.Tittle}====================");
                     children: [
                       Container(
                         width: 200,
-                        height: 160,
+                        height: 140,
                         decoration: BoxDecoration(
                           image: DecorationImage(
                             fit: BoxFit.cover,

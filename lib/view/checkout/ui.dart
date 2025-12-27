@@ -7,7 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../shiping/ui.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key});
+  const CheckoutScreen({super.key, required this.productBuyData});
+
+  final Map productBuyData;
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -15,21 +17,29 @@ class CheckoutScreen extends StatefulWidget {
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
   Map userData = {};
+  Map BuyProductData = {};
 
   getUserData() async {
     FlutterSecureStorage storage = FlutterSecureStorage();
     var d = await storage.read(key: "shipping");
     log("======D : $d");
-    if(d != null){
+    if (d != null) {
       userData = jsonDecode(d);
       log("======userData : ${userData['name']}");
     }
     setState(() {});
   }
-  @override
 
+  getBuyProductData() async {
+    BuyProductData = widget.productBuyData;
+    log("PPPPPPPPPPPP: $BuyProductData");
+    setState(() {});
+  }
+
+  @override
   void initState() {
     getUserData();
+    getBuyProductData();
     super.initState();
   }
 
@@ -102,22 +112,33 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            Text("${userData['street']}, ${userData['upazila']}, ${userData['district']} ,"),
+                            Text(
+                              "${userData['street']}, ${userData['upazila']}, ${userData['district']} ,",
+                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
                 ),
-                Positioned(top: 5, right: 8, child: InkWell(
+                Positioned(
+                  top: 5,
+                  right: 8,
+                  child: InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShippingScreen())).then((v) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ShippingScreen(),
+                        ),
+                      ).then((v) {
                         getUserData();
                       });
                     },
-                    child: Icon(Icons.edit))),
+                    child: Icon(Icons.edit),
+                  ),
+                ),
               ],
-
             ),
             SizedBox(height: 14),
             Text(
@@ -129,8 +150,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Card(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -139,15 +159,39 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         width: 100,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage("asset/images/detailsimag.png"),
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              "https://eplay.coderangon.com/storage/${BuyProductData['image']}",
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    Column(
-                      spacing: 5,
-                      children: [Text("Name"), Text("Brand"), Text("Price")],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            "Name: ${BuyProductData['title']}",
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            "Brand: ${BuyProductData['brand']}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            "Price: ${BuyProductData['price']} BDT",
+                            style: const TextStyle(color: Colors.green),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

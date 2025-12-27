@@ -11,7 +11,7 @@ void main (){
     MaterialApp(
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      home:CheckoutScreen(),
+      home: SplashScreen(),
     )
   );
 }

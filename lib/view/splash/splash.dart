@@ -23,10 +23,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
     await Future.delayed(Duration(seconds: 3));
 
-    FlutterSecureStorage storage = FlutterSecureStorage();
+    const FlutterSecureStorage storage = FlutterSecureStorage();
 
-        var tokens = await storage.read(key: "token");
-      log("===========sadfsdaf======${tokens}");
+    var tokens = await storage.read(key: "token");
+      log("===========Tokens======${tokens}");
 
       if(tokens == null){
         Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen() ));
