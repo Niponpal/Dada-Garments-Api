@@ -1,4 +1,6 @@
-import 'package:edada/view/OrderDetails/ui.dart';
+import 'package:edada/view/Order/orderDetails.dart';
+import 'package:edada/view/Order/ui.dart';
+
 import 'package:edada/view/auth/login/login.dart';
 import 'package:edada/view/checkout/ui.dart';
 import 'package:edada/view/shiping/ui.dart';
@@ -12,7 +14,7 @@ void main (){
     MaterialApp(
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      home: OrderDetailsScreen(),
+      home: MyOrderdetails(),
     )
   );
 }
