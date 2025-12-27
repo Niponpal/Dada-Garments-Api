@@ -14,7 +14,7 @@ void main (){
     MaterialApp(
       builder: EasyLoading.init(),
       debugShowCheckedModeBanner: false,
-      home: MyOrderdetails(),
+      home: OrderDetailsScreen(),
     )
   );
 }
