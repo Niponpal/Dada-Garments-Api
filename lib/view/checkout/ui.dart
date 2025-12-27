@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:edada/controller/checkout/ui.dart';
+import 'package:edada/view/homeProduct/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -197,6 +199,53 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: FloatingActionButton.extended(
+                  onPressed: () async {
+
+                    var checkoutInfo= {
+                      "customer_name": userData['name'],
+                      "customer_phone": userData['phone'],
+                      "payment_method": "cod",
+                      "items": [
+                        {
+                          "product_id": BuyProductData['id'],
+                          "product_name": BuyProductData['title'],
+                          "price": BuyProductData['price'],
+                          "quantity": 1
+                        }
+                      ],
+                      "address": {
+                        "street": userData['street'],
+                        "upazila": userData['upazila'],
+                        "district": userData['district']
+                      }
+                    };
+
+
+                    log("Checkout Button Clicked ======${jsonEncode(checkoutInfo)}");
+                bool status= await CheckOutController().CheckoutPostApi(data: checkoutInfo);
+                if(status==true){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeProductScreen(),));
+                }
+                  },
+                  icon: const Icon(Icons.payment),
+                  label: const Text(
+                    "Checkout",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  backgroundColor: Colors.orangeAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            )
+
           ],
         ),
       ),
